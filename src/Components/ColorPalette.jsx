@@ -4,7 +4,7 @@ const colors = ['#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
 
 const ColorPalette = ({ selectedColor, onSelectColor }) => {
     return (
-        <div style={styles.palette}>
+        <div className='palette'>
             {colors.map(color => (
                 <div
                     key={color}
@@ -21,11 +21,6 @@ const ColorPalette = ({ selectedColor, onSelectColor }) => {
 };
 
 const styles = {
-    palette: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: '10px'
-    },
     color: {
         width: '30px',
         height: '30px',

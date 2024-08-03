@@ -4,16 +4,66 @@
   --primary-color: #f8f8f8;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: red;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  backdrop-filter: blur(5px);
+  width: fit-content;
+  border-radius: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('./assets/doodle-small.png');
+  background-size: 200px;
+  background-attachment: fixed;
+  background-repeat: repeat;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
 .notification-box {
   position: fixed;
   bottom: 20px;
   right: 2%;
   transform: translateX(-50%, 0);
-  background-color: #333;
+  background-color: #000;
   color: #fff;
+  font-weight: 700;
   padding: 10px 20px;
   border-radius: 5px;
   z-index: 1000;
+  animation: up-down 1s infinite;
+}
+
+@keyframes up-down {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.palette {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .canvas-container {
@@ -25,10 +75,12 @@
   height: 90vw;
   max-height: 500px;
   position: relative;
+  margin: 0 auto;
 }
 
 .canvas-container canvas {
   width: 100%;
   height: 100%;
-  border: #333 1px solid;
+  border: #333 2px solid;
+  background-color: #fff;
 }
