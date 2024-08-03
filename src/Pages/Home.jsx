@@ -15,7 +15,7 @@ function Home() {
                     <p>Draw together in real-time!</p>
                     <span className='cta-group'>
                         <a href='#features' className='cta'>Learn</a>
-                        <Link to='/draw' className='cta'>Draw</Link>
+                        <a href='/draw' className='cta'>Draw</a>
                     </span>
                 </div>
                 <div className="hero">
