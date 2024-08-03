@@ -1,6 +1,4 @@
-import React from 'react'
 import hero from '../assets/hero.png'
-import { Link } from 'react-router-dom'
 import art from '../assets/icons/art.png'
 import blank from '../assets/icons/blank.png'
 import pencil from '../assets/icons/pencil.png'

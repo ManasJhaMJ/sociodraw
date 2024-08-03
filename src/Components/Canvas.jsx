@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 
 // const socket = io('http://localhost:3001');
 const socket = io(process.env.SOCKET_URL);
-console.log(process.env.SOCKET_URL);
 
 const Canvas = ({ color }) => {
     const canvasRef = useRef(null);
