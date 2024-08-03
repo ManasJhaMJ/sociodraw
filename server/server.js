@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 // Configure CORS to allow requests from your frontend domain
-const allowedOrigins = ['https://sociodraw.vercel.app'];
+const allowedOrigins = ['https://sociodraw.vercel.app', 'http://localhost:5173'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -48,6 +48,11 @@ io.on('connection', (socket) => {
     socket.on('clearCanvas', () => {
         drawingData = [];
         io.emit('clearCanvas'); // Notify all clients to clear their canvas
+    });
+
+    // Handle chat messages
+    socket.on('chatMessage', (message) => {
+        io.emit('chatMessage', message); // Broadcast the chat message to all clients
     });
 });
 
