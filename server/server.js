@@ -1,6 +1,8 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -35,6 +37,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3001, () => {
-    console.log('listening on *:3001');
+server.listen(process.env.PORT, () => {
+    console.log('listening on *:' + process.env.PORT);
 });
