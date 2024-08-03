@@ -7,14 +7,22 @@ dotenv.config();
 
 const app = express();
 
+// Configure CORS to allow requests from your frontend domain
+const allowedOrigins = ['https://sociodraw.vercel.app'];
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
 }));
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || '*',
+        origin: allowedOrigins,
     }
 });
 
