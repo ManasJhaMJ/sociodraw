@@ -10,7 +10,6 @@ const io = new Server(server, {
     }
 });
 
-// Store drawing data
 let drawingData = [];
 
 io.on('connection', (socket) => {
@@ -26,10 +25,13 @@ io.on('connection', (socket) => {
     });
 
     socket.on('drawing', (data) => {
-        // Broadcast drawing data to other users
         socket.broadcast.emit('drawing', data);
-        // Store drawing data
         drawingData.push(data);
+    });
+
+    socket.on('clearCanvas', () => {
+        drawingData = [];
+        io.emit('clearCanvas'); // Notify all clients to clear their canvas
     });
 });
 
