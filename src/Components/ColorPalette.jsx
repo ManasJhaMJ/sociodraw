@@ -25,7 +25,8 @@ const styles = {
         width: '30px',
         height: '30px',
         margin: '0 5px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        borderRadius: '50%'
     }
 };
 

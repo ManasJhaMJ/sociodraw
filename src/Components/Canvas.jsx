@@ -8,12 +8,28 @@ const Canvas = ({ color }) => {
     const [isDrawing, setIsDrawing] = useState(false);
     const lastX = useRef(0);
     const lastY = useRef(0);
+    const [timeLeft, setTimeLeft] = useState(86400); // 24 hours in seconds
+
+    useEffect(() => {
+        // Initialize timer
+        const intervalId = setInterval(() => {
+            setTimeLeft((prevTime) => {
+                if (prevTime <= 0) {
+                    clearInterval(intervalId);
+                    resetCanvas();
+                    return 86400; // Reset timer to 24 hours (in seconds)
+                }
+                return prevTime - 1;
+            });
+        }, 1000); // Update every second
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
 
-        // Set up the canvas size
         const resizeCanvas = () => {
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
@@ -22,9 +38,8 @@ const Canvas = ({ color }) => {
             context.lineWidth = 5;
         };
 
-        resizeCanvas(); // Initial resize
+        resizeCanvas();
 
-        // Resize canvas on window resize
         window.addEventListener('resize', resizeCanvas);
         return () => {
             window.removeEventListener('resize', resizeCanvas);
@@ -79,7 +94,7 @@ const Canvas = ({ color }) => {
             socket.emit('drawing', { x0: lastX.current, y0: lastY.current, x1: offsetX, y1: offsetY, color });
             lastX.current = offsetX;
             lastY.current = offsetY;
-            e.preventDefault(); // Prevent scrolling when drawing
+            e.preventDefault();
         };
 
         const handleTouchEnd = () => {
@@ -125,17 +140,36 @@ const Canvas = ({ color }) => {
         setIsDrawing(false);
     };
 
+    const resetCanvas = () => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        socket.emit('clearCanvas');
+    };
+
+    const formatTime = (seconds) => {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    };
+
     return (
-        <div className="canvas-container">
-            <canvas
-                ref={canvasRef}
-                onMouseDown={startDrawing}
-                onMouseMove={draw}
-                onMouseUp={endDrawing}
-                onMouseOut={endDrawing}
-                width={800}
-                height={600}
-            />
+        <div className="canvas-wrapper">
+            <div className="timer">
+                Time until reset: {formatTime(timeLeft)}
+            </div>
+            <div className="canvas-container">
+                <canvas
+                    ref={canvasRef}
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={endDrawing}
+                    onMouseOut={endDrawing}
+                    width={800}
+                    height={600}
+                />
+            </div>
         </div>
     );
 };

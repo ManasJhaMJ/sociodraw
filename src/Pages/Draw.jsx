@@ -24,8 +24,11 @@ function Draw() {
     }, []);
 
     return (
-        <div className="Draw">
+        <div className="draw">
             <h1>Realtime Canvas Drawing</h1>
+            <p>
+                Draw something on the canvas. Your changes will be reflected in real-time to all connected users.
+            </p>
             <Canvas color={color} />
             <ColorPalette selectedColor={color} onSelectColor={setColor} />
             {notification && <Notification message={notification} />}
