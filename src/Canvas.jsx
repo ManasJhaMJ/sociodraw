@@ -12,6 +12,28 @@ const Canvas = ({ color }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
+
+        // Set up the canvas size
+        const resizeCanvas = () => {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            context.lineCap = 'round';
+            context.lineJoin = 'round';
+            context.lineWidth = 5;
+        };
+
+        resizeCanvas(); // Initial resize
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', resizeCanvas);
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+        };
+    }, []);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.lineWidth = 5;
@@ -25,6 +47,13 @@ const Canvas = ({ color }) => {
             context.closePath();
         };
 
+        const handleInitialDrawingData = (data) => {
+            data.forEach((item) => {
+                handleDraw(item);
+            });
+        };
+
+        socket.on('initialDrawingData', handleInitialDrawingData);
         socket.on('drawing', handleDraw);
 
         const handleTouchStart = (e) => {
@@ -62,6 +91,7 @@ const Canvas = ({ color }) => {
         canvas.addEventListener('touchend', handleTouchEnd);
 
         return () => {
+            socket.off('initialDrawingData', handleInitialDrawingData);
             socket.off('drawing', handleDraw);
             canvas.removeEventListener('touchstart', handleTouchStart);
             canvas.removeEventListener('touchmove', handleTouchMove);
@@ -96,16 +126,17 @@ const Canvas = ({ color }) => {
     };
 
     return (
-        <canvas
-            ref={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={endDrawing}
-            onMouseOut={endDrawing}
-            width={600}
-            height={600}
-            style={{ border: '1px solid #000' }}
-        />
+        <div className="canvas-container">
+            <canvas
+                ref={canvasRef}
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={endDrawing}
+                onMouseOut={endDrawing}
+                width={800}
+                height={600}
+            />
+        </div>
     );
 };
 

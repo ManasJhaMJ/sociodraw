@@ -16,19 +16,19 @@
   z-index: 1000;
 }
 
-/* .canvas-container {
+.canvas-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 90vw;
-  max-width: 600px;
+  max-width: 500px;
   height: 90vw;
-  max-height: 600px;
+  max-height: 500px;
   position: relative;
 }
 
-canvas {
-  top: 10%;
-  position: absolute;
+.canvas-container canvas {
+  width: 100%;
+  height: 100%;
   border: #333 1px solid;
-} */
+}
