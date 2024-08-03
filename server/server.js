@@ -6,19 +6,21 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*", // Allow all origins for simplicity
+        origin: "*",
     }
 });
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-
-    socket.on('drawing', (data) => {
-        socket.broadcast.emit('drawing', data);
-    });
+    io.emit('userNotification', 'A user connected');
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
+        io.emit('userNotification', 'A user disconnected');
+    });
+
+    socket.on('drawing', (data) => {
+        socket.broadcast.emit('drawing', data);
     });
 });
 
