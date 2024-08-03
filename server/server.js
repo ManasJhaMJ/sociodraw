@@ -1,14 +1,20 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL || '*',
+}));
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: process.env.FRONTEND_URL || '*',
     }
 });
 

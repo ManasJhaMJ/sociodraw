@@ -6,6 +6,7 @@ import Notification from '../Components/Notification';
 
 // const socket = io('http://localhost:3001');
 const socket = io(process.env.SOCKET_URL);
+console.log(process.env.SOCKET_URL);
 
 function Draw() {
     const [notification, setNotification] = useState('');
