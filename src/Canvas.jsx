@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');
 
-const Canvas = () => {
+const Canvas = ({ color }) => {
     const canvasRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const lastX = useRef(0);
@@ -16,7 +16,8 @@ const Canvas = () => {
         context.lineJoin = 'round';
         context.lineWidth = 5;
 
-        const handleDraw = ({ x0, y0, x1, y1 }) => {
+        const handleDraw = ({ x0, y0, x1, y1, color }) => {
+            context.strokeStyle = color;
             context.beginPath();
             context.moveTo(x0, y0);
             context.lineTo(x1, y1);
@@ -42,12 +43,13 @@ const Canvas = () => {
         if (!isDrawing) return;
         const { offsetX, offsetY } = nativeEvent;
         const context = canvasRef.current.getContext('2d');
+        context.strokeStyle = color;
         context.beginPath();
         context.moveTo(lastX.current, lastY.current);
         context.lineTo(offsetX, offsetY);
         context.stroke();
         context.closePath();
-        socket.emit('drawing', { x0: lastX.current, y0: lastY.current, x1: offsetX, y1: offsetY });
+        socket.emit('drawing', { x0: lastX.current, y0: lastY.current, x1: offsetX, y1: offsetY, color });
         lastX.current = offsetX;
         lastY.current = offsetY;
     };
