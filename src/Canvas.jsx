@@ -27,10 +27,47 @@ const Canvas = ({ color }) => {
 
         socket.on('drawing', handleDraw);
 
+        const handleTouchStart = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const offsetX = e.touches[0].clientX - rect.left;
+            const offsetY = e.touches[0].clientY - rect.top;
+            setIsDrawing(true);
+            lastX.current = offsetX;
+            lastY.current = offsetY;
+        };
+
+        const handleTouchMove = (e) => {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const offsetX = e.touches[0].clientX - rect.left;
+            const offsetY = e.touches[0].clientY - rect.top;
+            context.strokeStyle = color;
+            context.beginPath();
+            context.moveTo(lastX.current, lastY.current);
+            context.lineTo(offsetX, offsetY);
+            context.stroke();
+            context.closePath();
+            socket.emit('drawing', { x0: lastX.current, y0: lastY.current, x1: offsetX, y1: offsetY, color });
+            lastX.current = offsetX;
+            lastY.current = offsetY;
+            e.preventDefault(); // Prevent scrolling when drawing
+        };
+
+        const handleTouchEnd = () => {
+            setIsDrawing(false);
+        };
+
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', handleTouchEnd);
+
         return () => {
             socket.off('drawing', handleDraw);
+            canvas.removeEventListener('touchstart', handleTouchStart);
+            canvas.removeEventListener('touchmove', handleTouchMove);
+            canvas.removeEventListener('touchend', handleTouchEnd);
         };
-    }, []);
+    }, [color, isDrawing]);
 
     const startDrawing = ({ nativeEvent }) => {
         const { offsetX, offsetY } = nativeEvent;
@@ -65,7 +102,7 @@ const Canvas = ({ color }) => {
             onMouseMove={draw}
             onMouseUp={endDrawing}
             onMouseOut={endDrawing}
-            width={800}
+            width={600}
             height={600}
             style={{ border: '1px solid #000' }}
         />
