@@ -1,13 +1,16 @@
-import Draw from "./Pages/Draw";
-
+import Navbar from './Components/Navbar'
+import Footer from './Components/Footer'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
-      <Draw />
+      <Navbar />
+      <Outlet />
+      <Footer />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
