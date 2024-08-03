@@ -3,6 +3,7 @@ import Canvas from '../Components/Canvas';
 import ColorPalette from '../Components/ColorPalette';
 import io from 'socket.io-client';
 import Notification from '../Components/Notification';
+import ChatBox from '../Components/ChatBox';
 
 // const socket = io('http://localhost:3001');
 const socket = io(process.env.SOCKET_URL);
@@ -33,6 +34,7 @@ function Draw() {
             </p>
             <Canvas color={color} />
             <ColorPalette selectedColor={color} onSelectColor={setColor} />
+            <ChatBox />
             {notification && <Notification message={notification} />}
         </div>
     );

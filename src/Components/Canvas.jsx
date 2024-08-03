@@ -10,7 +10,7 @@ const Canvas = ({ color }) => {
     const [isDrawing, setIsDrawing] = useState(false);
     const lastX = useRef(0);
     const lastY = useRef(0);
-    const [timeLeft, setTimeLeft] = useState(86400); // 24 hours in seconds
+    const [timeLeft, setTimeLeft] = useState(3600); // 12 hours in seconds
 
     useEffect(() => {
         // Initialize timer
@@ -19,7 +19,7 @@ const Canvas = ({ color }) => {
                 if (prevTime <= 0) {
                     clearInterval(intervalId);
                     resetCanvas();
-                    return 86400; // Reset timer to 24 hours (in seconds)
+                    return 3600; // Reset timer to 24 hours (in seconds)
                 }
                 return prevTime - 1;
             });
@@ -158,9 +158,9 @@ const Canvas = ({ color }) => {
 
     return (
         <div className="canvas-wrapper">
-            <div className="timer">
+            {/* <div className="timer">
                 Time until reset: {formatTime(timeLeft)}
-            </div>
+            </div> */}
             <div className="canvas-container">
                 <canvas
                     ref={canvasRef}

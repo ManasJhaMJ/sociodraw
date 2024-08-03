@@ -1,6 +1,6 @@
 import React from 'react';
 
-const colors = ['#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
+const colors = ['#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#fff'];
 
 const ColorPalette = ({ selectedColor, onSelectColor }) => {
     return (
@@ -11,7 +11,7 @@ const ColorPalette = ({ selectedColor, onSelectColor }) => {
                     style={{
                         ...styles.color,
                         backgroundColor: color,
-                        border: selectedColor === color ? '2px solid #000' : 'none'
+                        border: selectedColor === color ? '2px solid #000' : '1px dotted #000'
                     }}
                     onClick={() => onSelectColor(color)}
                 />
