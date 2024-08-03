@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 // const socket = io('http://localhost:3001');
-const socket = io(import.meta.env.VITE_SOCKET_URL);
+const socket = io(process.env.SOCKET_URL);
 
 const Canvas = ({ color }) => {
     const canvasRef = useRef(null);
